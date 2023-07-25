@@ -26,6 +26,20 @@ go run . server
 cp .config.toml.example .config.toml.prod
 
 # Please edit `.config.toml.prod` suitable with your configuration
+
+# build docker image
+docker build -t backend:latest .
+# run the server
+docker run -d -p <port_external>:<port_internal> --name <container_name> backend:latest
+# check with
+docker ps
+```
+
+> How to run with Docker Compose
+
+```bash
+cd ../
+docker-compose up -d
 ```
 
 > The configuration
