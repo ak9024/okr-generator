@@ -1,0 +1,7 @@
+[app]
+port = 
+host = ""
+version = ""
+
+[chatgpt]
+token = ""

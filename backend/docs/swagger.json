@@ -1,0 +1,80 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/okr-generator": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "OKR Generator",
+                "parameters": [
+                    {
+                        "description": "entity.OKRGeneratorRequest",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.OKRGeneratorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "entity.OKRGeneratorResponse200",
+                        "schema": {
+                            "$ref": "#/definitions/entity.OKRGeneratorResponse200"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.KeyResult": {
+            "type": "object",
+            "properties": {
+                "key_result": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.OKRGeneratorRequest": {
+            "type": "object",
+            "required": [
+                "objective",
+                "translate"
+            ],
+            "properties": {
+                "objective": {
+                    "type": "string"
+                },
+                "translate": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.OKRGeneratorResponse200": {
+            "type": "object",
+            "properties": {
+                "key_results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.KeyResult"
+                    }
+                },
+                "objective": {
+                    "type": "string"
+                },
+                "status_code": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
