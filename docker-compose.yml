@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend
+    ports:
+      - "3000:3000"
