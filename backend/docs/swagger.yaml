@@ -1,0 +1,50 @@
+definitions:
+  entity.KeyResult:
+    properties:
+      key_result:
+        type: string
+    type: object
+  entity.OKRGeneratorRequest:
+    properties:
+      objective:
+        type: string
+      translate:
+        type: string
+    required:
+    - objective
+    - translate
+    type: object
+  entity.OKRGeneratorResponse200:
+    properties:
+      key_results:
+        items:
+          $ref: '#/definitions/entity.KeyResult'
+        type: array
+      objective:
+        type: string
+      status_code:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/okr-generator:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: entity.OKRGeneratorRequest
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/entity.OKRGeneratorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: entity.OKRGeneratorResponse200
+          schema:
+            $ref: '#/definitions/entity.OKRGeneratorResponse200'
+      summary: OKR Generator
+swagger: "2.0"
