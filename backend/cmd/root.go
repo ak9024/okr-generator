@@ -9,6 +9,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
+	Use:     "okr-generator",
 	Version: config.Config().GetString("app.version"),
 }
 

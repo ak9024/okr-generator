@@ -1,13 +1,12 @@
-package service
+package okr
 
 import (
 	sdk "github.com/ak9024/go-chatgpt-sdk"
-	"github.com/ak9024/okr-generator/internal/entity"
 )
 
-func (s *Service) OKRGeneratorService(og *entity.OKRGeneratorRequest) (*sdk.ModelChatResponse, *sdk.ErrorResponse) {
+func (o *OKR) OKRGeneratorService(og *OKRGeneratorRequest) (*sdk.ModelChatResponse, *sdk.ErrorResponse) {
 	c := sdk.NewConfig(sdk.Config{
-		OpenAIKey: s.config.GetString("chatgpt.token"),
+		OpenAIKey: o.Config.GetString("chatgpt.token"),
 	})
 
 	// set default language to bahasa

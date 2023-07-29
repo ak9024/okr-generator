@@ -47,8 +47,9 @@ docker-compose up -d
 ```toml
 [app]
 port =
-host = ""
+host = "" // localhost
 version = ""
+env = "" // development | production
 
 [chatgpt]
 token = ""

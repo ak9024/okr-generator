@@ -1,4 +1,4 @@
-package entity
+package okr
 
 type OKRGeneratorRequest struct {
 	Objective string `json:"objective" validate:"required"`
