@@ -46,48 +46,52 @@ func GetEnvironment() Env {
 	}
 }
 
+func EnvGenerator(cmd *cobra.Command, args []string) {
+	// Get OS environment
+	env := GetEnvironment()
+
+	// Compose the config
+	cfg := map[string]interface{}{
+		"app": map[string]interface{}{
+			"port":    env.Port,
+			"host":    env.Host,
+			"version": env.Version,
+			"env":     env.Env,
+		},
+		"chatgpt": map[string]interface{}{
+			"token": env.Token,
+		},
+		"google": map[string]interface{}{
+			"redirect_url":  env.GoogleRedirectURL,
+			"client_id":     env.GoogleClientID,
+			"client_secret": env.GoogleClientSecret,
+			"auth_state":    env.GoogleAuthState,
+		},
+	}
+
+	// Convert the data to toml structure
+	b, errCreate := toml.Marshal(cfg)
+	if errCreate != nil {
+		fmt.Println(errCreate)
+	}
+
+	// Create a file .config.generated.toml
+	f, err := os.Create(".config.generated.toml")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer f.Close()
+
+	// Insert the data to file `.config.generated.toml`
+	_, errWrite := f.Write(b)
+	if errWrite != nil {
+		fmt.Println(errWrite)
+	}
+
+	fmt.Println("Done!")
+}
+
 var envGenerator = &cobra.Command{
 	Use: "env-generator",
-	Run: func(cmd *cobra.Command, args []string) {
-		// Get OS environment
-		env := GetEnvironment()
-		// Compose the config
-		cfg := map[string]interface{}{
-			"app": map[string]interface{}{
-				"port":    env.Port,
-				"host":    env.Host,
-				"version": env.Version,
-				"env":     env.Env,
-			},
-			"chatgpt": map[string]interface{}{
-				"token": env.Token,
-			},
-			"google": map[string]interface{}{
-				"redirect_url":  env.GoogleRedirectURL,
-				"client_id":     env.GoogleClientID,
-				"client_secret": env.GoogleClientSecret,
-				"auth_state":    env.GoogleAuthState,
-			},
-		}
-		// Convert the data to toml structure
-		b, errCreate := toml.Marshal(cfg)
-		if errCreate != nil {
-			fmt.Println(errCreate)
-		}
-
-		// Create a file .config.generated.toml
-		f, err := os.Create(".config.generated.toml")
-		if err != nil {
-			fmt.Println(err)
-		}
-		defer f.Close()
-
-		// Insert the data to file `.config.generated.toml`
-		_, errWrite := f.Write(b)
-		if errWrite != nil {
-			fmt.Println(errWrite)
-		}
-
-		fmt.Println("Done!")
-	},
+	Run: EnvGenerator,
 }

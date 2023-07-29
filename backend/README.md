@@ -55,4 +55,10 @@ env = "production"
 
 [chatgpt]
 token = ""
+
+[google]
+client_id = ""
+client_secret = ""
+redirect_url = ""
+auth_state = ""
 ```

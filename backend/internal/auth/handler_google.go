@@ -13,15 +13,31 @@ func (a *auth) GoogleLoginHandler(c *fiber.Ctx) error {
 	return c.Redirect(url, http.StatusTemporaryRedirect)
 }
 
-func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
-	token, _ := authConfig.Exchange(context.Background(), c.FormValue("code"))
-	client := authConfig.Client(context.Background(), token)
-	service, _ := oauth2_v2.New(client)
-	userInfo, _ := service.Userinfo.Get().Do()
+func (a *auth) GoogleLogoutHandler(c *fiber.Ctx) error {
+	return c.Redirect(googleAuthLogoutURL, http.StatusTemporaryRedirect)
+}
 
-	response := LoginResponse200{
+func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
+	token, errToken := authConfig.Exchange(context.Background(), c.FormValue("code"))
+	if errToken != nil {
+		c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	client := authConfig.Client(context.Background(), token)
+
+	service, errService := oauth2_v2.New(client)
+	if errService != nil {
+		c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	userInfo, errGetUserInfo := service.Userinfo.Get().Do()
+	if errGetUserInfo != nil {
+		c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	response := GoogleLoginCallbackResponse200{
 		StatusCode: fiber.StatusOK,
-		Data:       userInfo,
+		UserInfo:   userInfo,
 		Token:      token,
 	}
 

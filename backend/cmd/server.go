@@ -65,9 +65,12 @@ func (s *server) StartApp() {
 	api := app.Group("/api")
 	// init auth
 	auth := auth.NewAuth(s.Config)
-	// POST /api/auth/google/login
+	// GET /api/auth/google/login
 	api.Get("/auth/google/login", auth.GoogleLoginHandler)
+	// GET /api/auth/google/callback
 	api.Get("/auth/google/callback", auth.GoogleLoginCallback)
+	// GET /api/auth/google/logout
+	api.Get("/auth/google/logout", auth.GoogleLogoutHandler)
 
 	// group /v1/
 	v1 := api.Group("/v1")

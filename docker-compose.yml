@@ -11,6 +11,10 @@ services:
         ENV: "production"
         VERSION: "v0.1.0"
         TOKEN: ""
+        GOOGLE_CLIENT_ID: ""
+        GOOGLE_CLIENT_SECRET: ""
+        GOOGLE_REDIRECT_URL: ""
+        GOOGLE_AUTH_STATE: ""
     image: backend
     ports:
       - "3000:3000"

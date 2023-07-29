@@ -12,11 +12,8 @@ func SetupOauth(cfg config.Provider) {
 		RedirectURL:  cfg.GetString("google.redirect_url"),
 		ClientID:     cfg.GetString("google.client_id"),
 		ClientSecret: cfg.GetString("google.client_secret"),
-		Scopes: []string{
-			"https://www.googleapis.com/auth/userinfo.email",
-			"https://www.googleapis.com/auth/userinfo.profile",
-		},
-		Endpoint: google.Endpoint,
+		Scopes:       googleScopes,
+		Endpoint:     google.Endpoint,
 	}
 
 	state = cfg.GetString("google.auth_state")

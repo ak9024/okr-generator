@@ -1,7 +1,7 @@
 package auth
 
-type LoginResponse200 struct {
+type GoogleLoginCallbackResponse200 struct {
 	StatusCode int         `json:"status_code"`
-	Data       interface{} `json:"data"`
+	UserInfo   interface{} `json:"user_info"`
 	Token      interface{} `json:"token"`
 }
