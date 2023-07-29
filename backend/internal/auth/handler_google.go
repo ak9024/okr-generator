@@ -9,13 +9,13 @@ import (
 )
 
 func (a *auth) GoogleLoginHandler(c *fiber.Ctx) error {
-	url := oauthConfig.AuthCodeURL(authState)
+	url := authConfig.AuthCodeURL(state)
 	return c.Redirect(url, http.StatusTemporaryRedirect)
 }
 
 func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
-	token, _ := oauthConfig.Exchange(context.Background(), c.FormValue("code"))
-	client := oauthConfig.Client(context.Background(), token)
+	token, _ := authConfig.Exchange(context.Background(), c.FormValue("code"))
+	client := authConfig.Client(context.Background(), token)
 	service, _ := oauth2_v2.New(client)
 	userInfo, _ := service.Userinfo.Get().Do()
 
