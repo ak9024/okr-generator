@@ -10,11 +10,15 @@ import (
 )
 
 type Env struct {
-	Port    int
-	Host    string
-	Version string
-	Env     string
-	Token   string
+	Port               int
+	Host               string
+	Version            string
+	Env                string
+	Token              string
+	GoogleClientID     string
+	GoogleClientSecret string
+	GoogleRedirectURL  string
+	GoogleAuthState    string
 }
 
 // Get the OS environment
@@ -24,13 +28,21 @@ func GetEnvironment() Env {
 	version := os.Getenv("VERSION")
 	env := os.Getenv("ENV")
 	token := os.Getenv("TOKEN")
+	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
+	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	googleRedirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
+	googleAuthState := os.Getenv("GOOGLE_AUTH_STATE")
 
 	return Env{
-		Port:    port,
-		Host:    host,
-		Version: version,
-		Env:     env,
-		Token:   token,
+		Port:               port,
+		Host:               host,
+		Version:            version,
+		Env:                env,
+		Token:              token,
+		GoogleClientID:     googleClientID,
+		GoogleClientSecret: googleClientSecret,
+		GoogleRedirectURL:  googleRedirectURL,
+		GoogleAuthState:    googleAuthState,
 	}
 }
 
@@ -49,6 +61,12 @@ var envGenerator = &cobra.Command{
 			},
 			"chatgpt": map[string]interface{}{
 				"token": env.Token,
+			},
+			"google": map[string]interface{}{
+				"redirect_url":  env.GoogleRedirectURL,
+				"client_id":     env.GoogleClientID,
+				"client_secret": env.GoogleClientSecret,
+				"auth_state":    env.GoogleAuthState,
 			},
 		}
 		// Convert the data to toml structure

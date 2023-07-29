@@ -1,13 +1,13 @@
-package okr
+package auth
 
 import "github.com/ak9024/okr-generator/config"
 
-type okr struct {
+type auth struct {
 	Config config.Provider
 }
 
-func NewOKR(cfg config.Provider) *okr {
-	return &okr{
+func NewAuth(cfg config.Provider) *auth {
+	return &auth{
 		Config: cfg,
 	}
 }

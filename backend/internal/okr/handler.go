@@ -13,7 +13,7 @@ import (
 // @Success 200 {object} OKRGeneratorResponse200 "OKRGeneratorResponse200"
 // @Failure 400 {object} OKRGeneratorResponseError "OKRGeneratorResponseError"
 // @Failure 500 {object} OKRGeneratorResponseError "OKRGeneratorResponseError"
-func (o *OKR) OKRGeneratorHandler(c *fiber.Ctx) error {
+func (o *okr) OKRGeneratorHandler(c *fiber.Ctx) error {
 	og := new(OKRGeneratorRequest)
 
 	// parsing data body to struct `og`
