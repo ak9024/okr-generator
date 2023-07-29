@@ -9,3 +9,8 @@ type OKRGeneratorResponse200 struct {
 	Objective  string      `json:"objective"`
 	KeyResults []KeyResult `json:"key_results"`
 }
+
+type OKRGeneratorResponseError struct {
+	StatusCode int         `json:"status_code"`
+	Messages   interface{} `json:"messages"`
+}
