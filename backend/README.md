@@ -22,13 +22,10 @@ go run . server
 > How to run with Docker
 
 ```bash
-# Please create .config.toml.prod
-cp .config.toml.example .config.toml.prod
-
-# Please edit `.config.toml.prod` suitable with your configuration
-
+# Please create .config.toml
+go run . env-generator
 # build docker image
-docker build -t backend:latest .
+docker build --build-arg HOST=localhost --build-arg PORT=3000 --build-arg VERSION=vx.x.x --build-arg ENV=production --build-arg TOKEN="" -t backend:latest .
 # run the server
 docker run -d -p <port_external>:<port_internal> --name <container_name> backend:latest
 # check with
@@ -44,12 +41,14 @@ docker-compose up -d
 
 > The configuration
 
+> to generate env please run `go run . env-generator`
+
 ```toml
 [app]
-port =
-host = "" // localhost
-version = ""
-env = "" // development | production
+port = 3000
+host = "localhost"
+version = "vx.x.x"
+env = "production"
 
 [chatgpt]
 token = ""
