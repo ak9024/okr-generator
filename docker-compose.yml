@@ -5,6 +5,12 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        PORT: "3000"
+        HOST: "localhost"
+        ENV: "production"
+        VERSION: "v0.1.0"
+        TOKEN: ""
     image: backend
     ports:
       - "3000:3000"
