@@ -1,9 +1,8 @@
-package handler
+package okr
 
 import (
 	"strings"
 
-	"github.com/ak9024/okr-generator/internal/entity"
 	"github.com/ak9024/okr-generator/utils"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,8 +13,8 @@ import (
 // @Param payload body entity.OKRGeneratorRequest true "entity.OKRGeneratorRequest"
 // @Router /api/v1/okr-generator [post]
 // @Success 200 {object} entity.OKRGeneratorResponse200 "entity.OKRGeneratorResponse200"
-func (h *Handler) OKRGeneratorHandler(c *fiber.Ctx) error {
-	og := new(entity.OKRGeneratorRequest)
+func (o *OKR) OKRGeneratorHandler(c *fiber.Ctx) error {
+	og := new(OKRGeneratorRequest)
 
 	// parsing data body to struct `og`
 	if err := c.BodyParser(og); err != nil {
@@ -28,13 +27,13 @@ func (h *Handler) OKRGeneratorHandler(c *fiber.Ctx) error {
 	}
 
 	// get the server okr generator by pass the params request
-	result, err := h.service.OKRGeneratorService(og)
+	result, err := o.OKRGeneratorService(og)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 
 	// insert status_code 200
-	response := entity.OKRGeneratorResponse200{
+	response := OKRGeneratorResponse200{
 		StatusCode: fiber.StatusOK,
 	}
 
@@ -48,7 +47,7 @@ func (h *Handler) OKRGeneratorHandler(c *fiber.Ctx) error {
 			for _, kr := range strings.SplitN(krs, "\n", -1) {
 				// filter: just insert key unempty value
 				if kr != "" {
-					response.KeyResults = append(response.KeyResults, entity.KeyResult{
+					response.KeyResults = append(response.KeyResults, KeyResult{
 						KeyResult: kr,
 					})
 				}

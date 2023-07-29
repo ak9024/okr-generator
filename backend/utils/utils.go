@@ -1,18 +1,23 @@
 package utils
 
 import (
-	"github.com/ak9024/okr-generator/internal/entity"
 	"github.com/go-playground/validator"
 )
 
+type ErrorResponse struct {
+	FailedField string `json:"failed_field"`
+	Tag         string `json:"tag"`
+	Value       string `json:"value"`
+}
+
 var validate = validator.New()
 
-func ValidateStruct(data interface{}) []*entity.ErrorResponse {
-	var errors []*entity.ErrorResponse
+func ValidateStruct(data interface{}) []*ErrorResponse {
+	var errors []*ErrorResponse
 	err := validate.Struct(data)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
-			var element entity.ErrorResponse
+			var element ErrorResponse
 			element.FailedField = err.StructNamespace()
 			element.Tag = err.Tag()
 			element.Value = err.Param()
