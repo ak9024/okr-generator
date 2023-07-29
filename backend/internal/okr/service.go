@@ -1,34 +1,40 @@
 package okr
 
 import (
+	"strings"
+
 	sdk "github.com/ak9024/go-chatgpt-sdk"
+	"github.com/gofiber/fiber/v2"
 )
 
-func (o *OKR) OKRGeneratorService(og *OKRGeneratorRequest) (*sdk.ModelChatResponse, *sdk.ErrorResponse) {
-	c := sdk.NewConfig(sdk.Config{
-		OpenAIKey: o.Config.GetString("chatgpt.token"),
-	})
-
-	// set default language to bahasa
-	// set the params language from request body
-	content := ContentGenerator(og.Translate)
-
-	resp, err := c.ChatCompletions(sdk.ModelChat{
-		Model: "gpt-3.5-turbo",
-		Messages: []sdk.Message{
-			{
-				Role:    "system",
-				Content: content, // get content to train user system
-			},
-			{
-				Role:    "user",
-				Content: og.Objective, // get the object by user submit
-			},
-		},
-	})
+func (o *OKR) OKRGeneratorService(og *OKRGeneratorRequest) (*OKRGeneratorResponse200, *sdk.ErrorResponse) {
+	result, err := o.OKRGenerator(og)
 	if err != nil {
 		return nil, err
 	}
 
-	return resp, nil
+	// insert status_code 200
+	response := OKRGeneratorResponse200{
+		StatusCode: fiber.StatusOK,
+	}
+
+	// get the data from choices as strings
+	for _, choice := range result.Choices {
+		// split the results by `\n` and get first index as objective
+		response.Objective = strings.SplitN(choice.Message.Content, "\n", -1)[0]
+		// split the results by `\n` and start the data with second index as key result
+		for _, krs := range strings.SplitN(choice.Message.Content, "\n", -1)[1:] {
+			// convert key results into array type
+			for _, kr := range strings.SplitN(krs, "\n", -1) {
+				// filter: just insert key unempty value
+				if kr != "" {
+					response.KeyResults = append(response.KeyResults, KeyResult{
+						KeyResult: kr,
+					})
+				}
+			}
+		}
+	}
+
+	return &response, nil
 }

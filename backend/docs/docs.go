@@ -34,20 +34,32 @@ var doc = `{
                 "summary": "OKR Generator",
                 "parameters": [
                     {
-                        "description": "entity.OKRGeneratorRequest",
+                        "description": "OKRGeneratorRequest",
                         "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.OKRGeneratorRequest"
+                            "$ref": "#/definitions/okr.OKRGeneratorRequest"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "entity.OKRGeneratorResponse200",
+                        "description": "OKRGeneratorResponse200",
                         "schema": {
-                            "$ref": "#/definitions/entity.OKRGeneratorResponse200"
+                            "$ref": "#/definitions/okr.OKRGeneratorResponse200"
+                        }
+                    },
+                    "400": {
+                        "description": "OKRGeneratorResponseError",
+                        "schema": {
+                            "$ref": "#/definitions/okr.OKRGeneratorResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "OKRGeneratorResponseError",
+                        "schema": {
+                            "$ref": "#/definitions/okr.OKRGeneratorResponseError"
                         }
                     }
                 }
@@ -55,7 +67,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "entity.KeyResult": {
+        "okr.KeyResult": {
             "type": "object",
             "properties": {
                 "key_result": {
@@ -63,7 +75,7 @@ var doc = `{
                 }
             }
         },
-        "entity.OKRGeneratorRequest": {
+        "okr.OKRGeneratorRequest": {
             "type": "object",
             "required": [
                 "objective",
@@ -78,18 +90,27 @@ var doc = `{
                 }
             }
         },
-        "entity.OKRGeneratorResponse200": {
+        "okr.OKRGeneratorResponse200": {
             "type": "object",
             "properties": {
                 "key_results": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.KeyResult"
+                        "$ref": "#/definitions/okr.KeyResult"
                     }
                 },
                 "objective": {
                     "type": "string"
                 },
+                "status_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "okr.OKRGeneratorResponseError": {
+            "type": "object",
+            "properties": {
+                "messages": {},
                 "status_code": {
                     "type": "integer"
                 }

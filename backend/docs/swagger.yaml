@@ -1,10 +1,10 @@
 definitions:
-  entity.KeyResult:
+  okr.KeyResult:
     properties:
       key_result:
         type: string
     type: object
-  entity.OKRGeneratorRequest:
+  okr.OKRGeneratorRequest:
     properties:
       objective:
         type: string
@@ -14,14 +14,20 @@ definitions:
     - objective
     - translate
     type: object
-  entity.OKRGeneratorResponse200:
+  okr.OKRGeneratorResponse200:
     properties:
       key_results:
         items:
-          $ref: '#/definitions/entity.KeyResult'
+          $ref: '#/definitions/okr.KeyResult'
         type: array
       objective:
         type: string
+      status_code:
+        type: integer
+    type: object
+  okr.OKRGeneratorResponseError:
+    properties:
+      messages: {}
       status_code:
         type: integer
     type: object
@@ -33,18 +39,26 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: entity.OKRGeneratorRequest
+      - description: OKRGeneratorRequest
         in: body
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/entity.OKRGeneratorRequest'
+          $ref: '#/definitions/okr.OKRGeneratorRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: entity.OKRGeneratorResponse200
+          description: OKRGeneratorResponse200
           schema:
-            $ref: '#/definitions/entity.OKRGeneratorResponse200'
+            $ref: '#/definitions/okr.OKRGeneratorResponse200'
+        "400":
+          description: OKRGeneratorResponseError
+          schema:
+            $ref: '#/definitions/okr.OKRGeneratorResponseError'
+        "500":
+          description: OKRGeneratorResponseError
+          schema:
+            $ref: '#/definitions/okr.OKRGeneratorResponseError'
       summary: OKR Generator
 swagger: "2.0"
