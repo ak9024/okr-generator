@@ -13,10 +13,6 @@ func (a *auth) GoogleLoginHandler(c *fiber.Ctx) error {
 	return c.Redirect(url, http.StatusTemporaryRedirect)
 }
 
-func (a *auth) GoogleLogoutHandler(c *fiber.Ctx) error {
-	return c.Redirect(googleAuthLogoutURL, http.StatusTemporaryRedirect)
-}
-
 func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 	token, errToken := authConfig.Exchange(context.Background(), c.FormValue("code"))
 	if errToken != nil {
@@ -37,9 +33,22 @@ func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 
 	response := GoogleLoginCallbackResponse200{
 		StatusCode: fiber.StatusOK,
-		UserInfo:   userInfo,
-		Token:      token,
+		User: User{
+			ID:            userInfo.Id,
+			Name:          userInfo.Name,
+			Email:         userInfo.Email,
+			VerifiedEmail: *userInfo.VerifiedEmail,
+			Token:         token.AccessToken,
+			FamilyName:    userInfo.FamilyName,
+			GivenName:     userInfo.GivenName,
+			Locale:        userInfo.Locale,
+			Picture:       userInfo.Picture,
+		},
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func (a *auth) GoogleLogoutHandler(c *fiber.Ctx) error {
+	return c.Redirect(googleAuthLogoutURL, http.StatusTemporaryRedirect)
 }

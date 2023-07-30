@@ -9,6 +9,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param payload body OKRGeneratorRequest true "OKRGeneratorRequest"
+// @Security ApiKeyAuth
 // @Router /api/v1/okr-generator [post]
 // @Success 200 {object} OKRGeneratorResponse200 "OKRGeneratorResponse200"
 // @Failure 400 {object} OKRGeneratorResponseError "OKRGeneratorResponseError"

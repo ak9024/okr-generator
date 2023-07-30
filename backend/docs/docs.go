@@ -25,6 +25,11 @@ var doc = `{
     "paths": {
         "/api/v1/okr-generator": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -116,6 +121,13 @@ var doc = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -134,8 +146,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "OKR Generator API",
+	Description: "This is Official API for OKR Generator API",
 }
 
 type s struct{}

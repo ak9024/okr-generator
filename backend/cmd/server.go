@@ -12,6 +12,7 @@ import (
 	"github.com/ak9024/okr-generator/docs"
 	"github.com/ak9024/okr-generator/internal/auth"
 	"github.com/ak9024/okr-generator/internal/okr"
+	"github.com/ak9024/okr-generator/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -43,8 +44,6 @@ func NewServer(cfg config.Provider) *server {
 	}
 }
 
-// @title OKR Generator API
-// @description This is Official API for OKR Generator API
 func (s *server) StartApp() {
 	// init swagger
 	setupSwaggerInfo(s)
@@ -74,6 +73,9 @@ func (s *server) StartApp() {
 
 	// group /v1/
 	v1 := api.Group("/v1")
+	// prevent access to v1 with AuthMiddleware
+	// need to add header Authorization <token>
+	v1.Use(utils.AuthMiddleware)
 
 	// init okr config
 	okr := okr.NewOKR(s.Config)
