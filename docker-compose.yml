@@ -14,7 +14,7 @@ services:
         GOOGLE_CLIENT_ID: ""
         GOOGLE_CLIENT_SECRET: ""
         GOOGLE_REDIRECT_URL: ""
-        GOOGLE_AUTH_STATE: ""
+        GOOGLE_CLIENT_REDIRECT_URL: ""
         SUPABASE_URL: ""
         SUPABASE_KEY: ""
     image: backend

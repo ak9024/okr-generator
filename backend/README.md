@@ -67,7 +67,7 @@ token = ""
 client_id = ""
 client_secret = ""
 redirect_url = ""
-auth_state = ""
+client_redirect_url = ""
 
 [supabase]
 url = ""

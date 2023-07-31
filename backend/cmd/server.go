@@ -49,9 +49,8 @@ func NewServer(cfg config.Provider) *server {
 func (s *server) StartApp() {
 	// init swagger
 	setupSwaggerInfo(s)
-	// setup google auth
-	auth.SetupOauth(s.Config)
 
+	// init new fiber app
 	app := fiber.New()
 
 	// setup fiber middleware
