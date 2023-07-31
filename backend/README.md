@@ -61,4 +61,8 @@ client_id = ""
 client_secret = ""
 redirect_url = ""
 auth_state = ""
+
+[supabase]
+url = ""
+key = ""
 ```
