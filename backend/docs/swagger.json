@@ -1,11 +1,18 @@
 {
     "swagger": "2.0",
     "info": {
+        "description": "This is Official API for OKR Generator API",
+        "title": "OKR Generator API",
         "contact": {}
     },
     "paths": {
         "/api/v1/okr-generator": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -96,6 +103,13 @@
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

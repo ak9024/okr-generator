@@ -10,6 +10,8 @@ import (
 
 	"github.com/ak9024/okr-generator/config"
 	"github.com/ak9024/okr-generator/docs"
+	"github.com/ak9024/okr-generator/internal/auth"
+	"github.com/ak9024/okr-generator/internal/lib"
 	"github.com/ak9024/okr-generator/internal/okr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -42,11 +44,11 @@ func NewServer(cfg config.Provider) *server {
 	}
 }
 
-// @title OKR Generator API
-// @description This is Official API for OKR Generator API
 func (s *server) StartApp() {
 	// init swagger
 	setupSwaggerInfo(s)
+	// setup google auth
+	auth.SetupOauth(s.Config)
 
 	app := fiber.New()
 
@@ -58,25 +60,39 @@ func (s *server) StartApp() {
 	// declare endpoint for swagger documentation
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
-	// init okr config
-	okr := okr.OKR{
-		Config: s.Config,
-	}
-
+	// group /api/
 	api := app.Group("/api")
-	v1 := api.Group("/v1")
+	// init auth
+	auth := auth.NewAuth(s.Config)
+	// GET /api/auth/google/login
+	api.Get("/auth/google/login", auth.GoogleLoginHandler)
+	// GET /api/auth/google/callback
+	api.Get("/auth/google/callback", auth.GoogleLoginCallback)
+	// GET /api/auth/google/logout
+	api.Get("/auth/google/logout", auth.GoogleLogoutHandler)
 
+	// group /v1/
+	v1 := api.Group("/v1")
+	// prevent access to v1 with AuthMiddleware
+	// need to add header Authorization <token>
+	v1.Use(lib.AuthMiddleware)
+
+	// init okr config
+	okr := okr.NewOKR(s.Config)
 	// POST /api/v1/okr-generator
 	v1.Post("/okr-generator", okr.OKRGeneratorHandler)
 
+	// Get PORT
 	getPort := fmt.Sprintf(":%d", s.Config.GetInt("app.port"))
 
+	// if run in mode development
 	if s.Config.GetString("app.env") == "development" {
 		if err := app.Listen(getPort); err != nil {
 			logrus.Error(err)
 		}
 	}
 
+	// if run in mode production
 	if s.Config.GetString("app.env") == "production" {
 		go func() {
 			if err := app.Listen(getPort); err != nil {
@@ -97,6 +113,7 @@ func (s *server) StartApp() {
 	}
 }
 
+// setup swagger info
 func setupSwaggerInfo(s *server) {
 	// get hostname (host + port) get from file .config.toml
 	getHostName := fmt.Sprintf("%s:%d", s.Config.GetString("app.host"), s.Config.GetInt("app.port"))

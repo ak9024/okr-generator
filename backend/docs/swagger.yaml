@@ -33,6 +33,8 @@ definitions:
     type: object
 info:
   contact: {}
+  description: This is Official API for OKR Generator API
+  title: OKR Generator API
 paths:
   /api/v1/okr-generator:
     post:
@@ -60,5 +62,12 @@ paths:
           description: OKRGeneratorResponseError
           schema:
             $ref: '#/definitions/okr.OKRGeneratorResponseError'
+      security:
+      - ApiKeyAuth: []
       summary: OKR Generator
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

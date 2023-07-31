@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (o *OKR) OKRGeneratorService(og *OKRGeneratorRequest) (*OKRGeneratorResponse200, *sdk.ErrorResponse) {
+func (o *okr) OKRGeneratorService(og *OKRGeneratorRequest) (*OKRGeneratorResponse200, *sdk.ErrorResponse) {
 	result, err := o.OKRGenerator(og)
 	if err != nil {
 		return nil, err

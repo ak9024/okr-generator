@@ -1,16 +1,8 @@
-package utils
+package lib
 
 import (
 	"github.com/go-playground/validator"
 )
-
-type ErrorResponse struct {
-	FailedField string `json:"failed_field"`
-	Tag         string `json:"tag"`
-	Value       string `json:"value"`
-}
-
-var validate = validator.New()
 
 func ValidateStruct(data interface{}) []*ErrorResponse {
 	var errors []*ErrorResponse

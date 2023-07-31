@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./assets/sq-backend.png" />
+    <img src="./assets/backend.png" />
     <h2>Backend (okr-generator)</h2>
 </div>
 
@@ -14,6 +14,9 @@
 ```bash
 # please add config, and suitable with your preference
 cp .config.toml.example .config.toml
+# or generate env with
+go run . env-generator
+cp .config.generated.toml .config.toml
 
 # run the server
 go run . server
@@ -22,10 +25,10 @@ go run . server
 > How to run with Docker
 
 ```bash
-# Please create .config.toml
+# generate env
 go run . env-generator
 # build docker image
-docker build --build-arg HOST=localhost --build-arg PORT=3000 --build-arg VERSION=vx.x.x --build-arg ENV=production --build-arg TOKEN="" -t backend:latest .
+docker build --build-arg HOST=localhost --build-arg <env>=<value> -t backend:latest .
 # run the server
 docker run -d -p <port_external>:<port_internal> --name <container_name> backend:latest
 # check with
@@ -52,4 +55,14 @@ env = "production"
 
 [chatgpt]
 token = ""
+
+[google]
+client_id = ""
+client_secret = ""
+redirect_url = ""
+auth_state = ""
+
+[supabase]
+url = ""
+key = ""
 ```

@@ -1,7 +1,7 @@
 package okr
 
 import (
-	"github.com/ak9024/okr-generator/utils"
+	"github.com/ak9024/okr-generator/internal/lib"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -9,11 +9,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param payload body OKRGeneratorRequest true "OKRGeneratorRequest"
+// @Security ApiKeyAuth
 // @Router /api/v1/okr-generator [post]
 // @Success 200 {object} OKRGeneratorResponse200 "OKRGeneratorResponse200"
 // @Failure 400 {object} OKRGeneratorResponseError "OKRGeneratorResponseError"
 // @Failure 500 {object} OKRGeneratorResponseError "OKRGeneratorResponseError"
-func (o *OKR) OKRGeneratorHandler(c *fiber.Ctx) error {
+func (o *okr) OKRGeneratorHandler(c *fiber.Ctx) error {
 	og := new(OKRGeneratorRequest)
 
 	// parsing data body to struct `og`
@@ -25,7 +26,7 @@ func (o *OKR) OKRGeneratorHandler(c *fiber.Ctx) error {
 	}
 
 	// validate data request
-	if err := utils.ValidateStruct(og); err != nil {
+	if err := lib.ValidateStruct(og); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(OKRGeneratorResponseError{
 			StatusCode: fiber.StatusBadRequest,
 			Messages:   err,

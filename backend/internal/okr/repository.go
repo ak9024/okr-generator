@@ -2,7 +2,7 @@ package okr
 
 import sdk "github.com/ak9024/go-chatgpt-sdk"
 
-func (o *OKR) OKRGenerator(og *OKRGeneratorRequest) (*sdk.ModelChatResponse, *sdk.ErrorResponse) {
+func (o *okr) OKRGenerator(og *OKRGeneratorRequest) (*sdk.ModelChatResponse, *sdk.ErrorResponse) {
 	c := sdk.NewConfig(sdk.Config{
 		OpenAIKey: o.Config.GetString("chatgpt.token"),
 	})
