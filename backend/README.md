@@ -11,7 +11,9 @@
 
 #### Commands
 
-> go run . <options>
+```bash
+go run . <options>
+```
 
 | options       | description    |
 | ------------- | -------------- |

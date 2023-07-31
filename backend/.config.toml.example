@@ -1,8 +1,0 @@
-[app]
-port = 
-host = ""
-version = ""
-env = ""
-
-[chatgpt]
-token = ""
