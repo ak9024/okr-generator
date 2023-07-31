@@ -19,6 +19,8 @@ type Env struct {
 	GoogleClientSecret string
 	GoogleRedirectURL  string
 	GoogleAuthState    string
+	SupabaseURL        string
+	SupabaseKey        string
 }
 
 // Get the OS environment
@@ -32,6 +34,8 @@ func GetEnvironment() Env {
 	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
 	googleRedirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
 	googleAuthState := os.Getenv("GOOGLE_AUTH_STATE")
+	supabaseURL := os.Getenv("SUPABASE_URL")
+	supbaseKey := os.Getenv("SUPABSE_KEY")
 
 	return Env{
 		Port:               port,
@@ -43,6 +47,8 @@ func GetEnvironment() Env {
 		GoogleClientSecret: googleClientSecret,
 		GoogleRedirectURL:  googleRedirectURL,
 		GoogleAuthState:    googleAuthState,
+		SupabaseURL:        supabaseURL,
+		SupabaseKey:        supbaseKey,
 	}
 }
 
@@ -66,6 +72,10 @@ func EnvGenerator(cmd *cobra.Command, args []string) {
 			"client_id":     env.GoogleClientID,
 			"client_secret": env.GoogleClientSecret,
 			"auth_state":    env.GoogleAuthState,
+		},
+		"supabase": map[string]interface{}{
+			"url": env.SupabaseURL,
+			"key": env.SupabaseKey,
 		},
 	}
 
