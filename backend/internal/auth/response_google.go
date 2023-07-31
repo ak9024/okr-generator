@@ -16,3 +16,7 @@ type GoogleLoginCallbackResponse200 struct {
 	StatusCode int  `json:"status_code"`
 	User       User `json:"user"`
 }
+
+type UserEmail struct {
+	Email string `json:"email"`
+}

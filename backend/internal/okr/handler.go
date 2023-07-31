@@ -1,7 +1,7 @@
 package okr
 
 import (
-	"github.com/ak9024/okr-generator/utils"
+	"github.com/ak9024/okr-generator/internal/lib"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,7 +26,7 @@ func (o *okr) OKRGeneratorHandler(c *fiber.Ctx) error {
 	}
 
 	// validate data request
-	if err := utils.ValidateStruct(og); err != nil {
+	if err := lib.ValidateStruct(og); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(OKRGeneratorResponseError{
 			StatusCode: fiber.StatusBadRequest,
 			Messages:   err,

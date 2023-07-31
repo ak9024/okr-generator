@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	oauth2_v2 "google.golang.org/api/oauth2/v2"
 )
 
@@ -31,22 +32,42 @@ func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 		c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	response := GoogleLoginCallbackResponse200{
-		StatusCode: fiber.StatusOK,
-		User: User{
-			ID:            userInfo.Id,
-			Name:          userInfo.Name,
-			Email:         userInfo.Email,
-			VerifiedEmail: *userInfo.VerifiedEmail,
-			Token:         token.AccessToken,
-			FamilyName:    userInfo.FamilyName,
-			GivenName:     userInfo.GivenName,
-			Locale:        userInfo.Locale,
-			Picture:       userInfo.Picture,
-		},
+	if userInfo != nil {
+		emailInDB, _ := a.ViewUserFilterByEmail(userInfo.Email)
+		if emailInDB == nil {
+			um := UserModel{
+				UUID:    uuid.New(),
+				Name:    userInfo.Name,
+				Email:   userInfo.Email,
+				EmailID: userInfo.Id,
+				Picture: userInfo.Picture,
+			}
+
+			_, errInsert := a.InsertUser(um)
+			if errInsert != nil {
+				return c.SendStatus(fiber.StatusInternalServerError)
+			}
+		}
+
+		response := GoogleLoginCallbackResponse200{
+			StatusCode: fiber.StatusOK,
+			User: User{
+				ID:            userInfo.Id,
+				Name:          userInfo.Name,
+				Email:         userInfo.Email,
+				VerifiedEmail: *userInfo.VerifiedEmail,
+				Token:         token.AccessToken,
+				FamilyName:    userInfo.FamilyName,
+				GivenName:     userInfo.GivenName,
+				Locale:        userInfo.Locale,
+				Picture:       userInfo.Picture,
+			},
+		}
+
+		return c.Status(fiber.StatusOK).JSON(response)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.SendStatus(fiber.StatusBadRequest)
 }
 
 func (a *auth) GoogleLogoutHandler(c *fiber.Ctx) error {
