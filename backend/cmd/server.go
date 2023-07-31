@@ -16,6 +16,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/gofiber/swagger"
 	"github.com/sirupsen/logrus"
@@ -56,9 +58,14 @@ func (s *server) StartApp() {
 	app.Use(cors.New())
 	app.Use(requestid.New())
 	app.Use(logger.New())
+	app.Use(recover.New())
 
 	// declare endpoint for swagger documentation
 	app.Get("/swagger/*", swagger.HandlerDefault)
+	// monitor
+	app.Get("/metrics", monitor.New(monitor.Config{
+		Title: "OKR Generator Metrics Page",
+	}))
 
 	// group /api/
 	api := app.Group("/api")

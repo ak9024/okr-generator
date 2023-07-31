@@ -9,15 +9,22 @@
 
 ### Getting Started
 
+#### Commands
+
+> go run . <options>
+
+| options       | description    |
+| ------------- | -------------- |
+| server        | run the server |
+| env-generator | generate env   |
+
 > How to run for development mode
 
 ```bash
-# please add config, and suitable with your preference
-cp .config.toml.example .config.toml
-# or generate env with
+# generate env
 go run . env-generator
+# copy r.config.generated.toml to .config.toml
 cp .config.generated.toml .config.toml
-
 # run the server
 go run . server
 ```
@@ -25,8 +32,6 @@ go run . server
 > How to run with Docker
 
 ```bash
-# generate env
-go run . env-generator
 # build docker image
 docker build --build-arg HOST=localhost --build-arg <env>=<value> -t backend:latest .
 # run the server
