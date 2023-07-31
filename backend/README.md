@@ -28,7 +28,7 @@ go run . server
 # generate env
 go run . env-generator
 # build docker image
-docker build --build-arg HOST=localhost --build-arg PORT=3000 --build-arg VERSION=vx.x.x --build-arg ENV=production --build-arg TOKEN="" -t backend:latest .
+docker build --build-arg HOST=localhost --build-arg <env>=<value> -t backend:latest .
 # run the server
 docker run -d -p <port_external>:<port_internal> --name <container_name> backend:latest
 # check with
