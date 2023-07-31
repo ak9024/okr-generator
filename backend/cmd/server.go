@@ -11,8 +11,8 @@ import (
 	"github.com/ak9024/okr-generator/config"
 	"github.com/ak9024/okr-generator/docs"
 	"github.com/ak9024/okr-generator/internal/auth"
+	"github.com/ak9024/okr-generator/internal/lib"
 	"github.com/ak9024/okr-generator/internal/okr"
-	"github.com/ak9024/okr-generator/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -75,7 +75,7 @@ func (s *server) StartApp() {
 	v1 := api.Group("/v1")
 	// prevent access to v1 with AuthMiddleware
 	// need to add header Authorization <token>
-	v1.Use(utils.AuthMiddleware)
+	v1.Use(lib.AuthMiddleware)
 
 	// init okr config
 	okr := okr.NewOKR(s.Config)
