@@ -1,39 +1,41 @@
 package auth
 
 import (
-	"context"
+	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	oauth2_v2 "google.golang.org/api/oauth2/v2"
 )
 
 func (a *auth) GoogleLoginHandler(c *fiber.Ctx) error {
-	url := authConfig.AuthCodeURL(state)
-	return c.Redirect(url, http.StatusTemporaryRedirect)
+	redirectUrl := generateRedirectUrl(a.Config)
+	return c.Redirect(redirectUrl, fiber.StatusTemporaryRedirect)
 }
 
 func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
-	token, errToken := authConfig.Exchange(context.Background(), c.FormValue("code"))
+	token, errToken := generateGoogleToken(c, a.Config)
 	if errToken != nil {
 		c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	client := authConfig.Client(context.Background(), token)
-
-	service, errService := oauth2_v2.New(client)
+	service, errService := initGoogleClient(a.Config, token)
 	if errService != nil {
-		c.SendStatus(fiber.StatusBadRequest)
+		c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	// get data profile
 	userInfo, errGetUserInfo := service.Userinfo.Get().Do()
 	if errGetUserInfo != nil {
-		c.SendStatus(fiber.StatusBadRequest)
+		c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	// userInfo ready, next process the data
 	if userInfo != nil {
+		// check the email in supabase storage
 		emailInDB, _ := a.ViewUserFilterByEmail(userInfo.Email)
+		// if email not exists, insert the data as a new email
 		if emailInDB == nil {
 			um := UserModel{
 				UUID:    uuid.New(),
@@ -43,28 +45,18 @@ func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 				Picture: userInfo.Picture,
 			}
 
+			// insert new email
 			_, errInsert := a.InsertUser(um)
 			if errInsert != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 		}
 
-		response := GoogleLoginCallbackResponse200{
-			StatusCode: fiber.StatusOK,
-			User: User{
-				ID:            userInfo.Id,
-				Name:          userInfo.Name,
-				Email:         userInfo.Email,
-				VerifiedEmail: *userInfo.VerifiedEmail,
-				Token:         token.AccessToken,
-				FamilyName:    userInfo.FamilyName,
-				GivenName:     userInfo.GivenName,
-				Locale:        userInfo.Locale,
-				Picture:       userInfo.Picture,
-			},
-		}
-
-		return c.Status(fiber.StatusOK).JSON(response)
+		// @TODO need to refactor
+		params := url.Values{}
+		params.Add("token", token.AccessToken)
+		redirectUrl := fmt.Sprintf("%s?%s", a.Config.GetString("google.client_redirect_url"), params.Encode())
+		return c.Redirect(redirectUrl, fiber.StatusTemporaryRedirect)
 	}
 
 	return c.SendStatus(fiber.StatusBadRequest)

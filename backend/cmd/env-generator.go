@@ -10,17 +10,17 @@ import (
 )
 
 type Env struct {
-	Port               int
-	Host               string
-	Version            string
-	Env                string
-	Token              string
-	GoogleClientID     string
-	GoogleClientSecret string
-	GoogleRedirectURL  string
-	GoogleAuthState    string
-	SupabaseURL        string
-	SupabaseKey        string
+	Port                    int
+	Host                    string
+	Version                 string
+	Env                     string
+	Token                   string
+	GoogleClientID          string
+	GoogleClientSecret      string
+	GoogleRedirectURL       string
+	GoogleClientRedirectURL string
+	SupabaseURL             string
+	SupabaseKey             string
 }
 
 // Get the OS environment
@@ -33,22 +33,22 @@ func GetEnvironment() Env {
 	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
 	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
 	googleRedirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
-	googleAuthState := os.Getenv("GOOGLE_AUTH_STATE")
+	GoogleClientRedirectURL := os.Getenv("GOOGLE_CLIENT_REDIRECT_URL")
 	supabaseURL := os.Getenv("SUPABASE_URL")
 	supbaseKey := os.Getenv("SUPABSE_KEY")
 
 	return Env{
-		Port:               port,
-		Host:               host,
-		Version:            version,
-		Env:                env,
-		Token:              token,
-		GoogleClientID:     googleClientID,
-		GoogleClientSecret: googleClientSecret,
-		GoogleRedirectURL:  googleRedirectURL,
-		GoogleAuthState:    googleAuthState,
-		SupabaseURL:        supabaseURL,
-		SupabaseKey:        supbaseKey,
+		Port:                    port,
+		Host:                    host,
+		Version:                 version,
+		Env:                     env,
+		Token:                   token,
+		GoogleClientID:          googleClientID,
+		GoogleClientSecret:      googleClientSecret,
+		GoogleRedirectURL:       googleRedirectURL,
+		GoogleClientRedirectURL: GoogleClientRedirectURL,
+		SupabaseURL:             supabaseURL,
+		SupabaseKey:             supbaseKey,
 	}
 }
 
@@ -68,10 +68,10 @@ func EnvGenerator(cmd *cobra.Command, args []string) {
 			"token": env.Token,
 		},
 		"google": map[string]interface{}{
-			"redirect_url":  env.GoogleRedirectURL,
-			"client_id":     env.GoogleClientID,
-			"client_secret": env.GoogleClientSecret,
-			"auth_state":    env.GoogleAuthState,
+			"redirect_url":        env.GoogleRedirectURL,
+			"client_id":           env.GoogleClientID,
+			"client_secret":       env.GoogleClientSecret,
+			"client_redirect_url": env.GoogleClientRedirectURL,
 		},
 		"supabase": map[string]interface{}{
 			"url": env.SupabaseURL,
