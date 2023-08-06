@@ -21,7 +21,6 @@ jobs:
       - name: Build Docker Image
         uses: actions/checkout@v3
         run: |
-          ls \
           cd backend; ls \
           docker build --build-arg HOST=${{ secrets.HOST }} --build-arg PORT=${{ secrets.PORT }} \
           --build-arg VERSION=${{ secrets.VERSION }} --build-arg TOKEN=${{ secrets.TOKEN }} \
