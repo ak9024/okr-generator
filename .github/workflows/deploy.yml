@@ -20,7 +20,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          cd backend;docker build --build-arg HOST=${{ secrets.HOST }} --build-arg PORT=${{ secrets.PORT }} \
+          ls \
+          cd backend; ls \
+          docker build --build-arg HOST=${{ secrets.HOST }} --build-arg PORT=${{ secrets.PORT }} \
           --build-arg VERSION=${{ secrets.VERSION }} --build-arg TOKEN=${{ secrets.TOKEN }} \
           --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
           --build-arg GOOGLE_REDIRECT_URL=${{ secrets.GOOGLE_REDIRECT_URL }} --build-arg GOOGLE_CLIENT_REDIRECT_URL=${{ secrets.GOOGLE_CLIENT_REDIRECT_URL }} \
