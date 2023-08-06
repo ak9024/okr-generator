@@ -1,9 +1,7 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -52,11 +50,13 @@ func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 			}
 		}
 
-		// @TODO need to refactor
-		params := url.Values{}
-		params.Add("token", token.AccessToken)
-		redirectUrl := fmt.Sprintf("%s?%s", a.Config.GetString("google.client_redirect_url"), params.Encode())
-		return c.Redirect(redirectUrl, fiber.StatusTemporaryRedirect)
+		c.Cookie(&fiber.Cookie{
+			Name:    "token",
+			Value:   token.AccessToken,
+			Expires: token.Expiry,
+		})
+
+		return c.Redirect(a.Config.GetString("google.client_redirect_url"), fiber.StatusTemporaryRedirect)
 	}
 
 	return c.SendStatus(fiber.StatusBadRequest)
