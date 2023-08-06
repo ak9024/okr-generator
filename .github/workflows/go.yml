@@ -5,9 +5,9 @@ name: Go
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -40,4 +40,5 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEYS }}
           script: whoami
