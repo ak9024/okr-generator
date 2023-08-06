@@ -42,7 +42,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEYS }}
 
       - name: connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker images"
 
       - name: clean up
         run: rm -rf ~/.ssh
