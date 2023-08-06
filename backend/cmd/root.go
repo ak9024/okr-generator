@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/ak9024/okr-generator/config"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +15,10 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+
 	rootCmd.AddCommand(serverCmd)
 	rootCmd.AddCommand(envGenerator)
 	if err := rootCmd.Execute(); err != nil {
