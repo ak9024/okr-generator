@@ -5,9 +5,9 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -31,6 +31,7 @@ jobs:
 
       - name: Test
         run: cd backend;go test -v ./...
+
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -45,5 +46,5 @@ jobs:
       - name: connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
 
-      - mame: clean up
+      - name: clean up
         run: rm -rf ~/.ssh
