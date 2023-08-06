@@ -19,6 +19,7 @@ jobs:
           script: whoami
 
       - name: Build Docker Image
+        uses: actions/checkout@v3
         run: |
           ls \
           cd backend; ls \
