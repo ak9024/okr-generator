@@ -20,7 +20,7 @@ resource "linode_instance" "okr-generator" {
 
   connection {
     type        = "ssh"
-    user        = "root"
+    user        = var.ssh_username
     private_key = file("~/.ssh/id_github")
     host        = self.ip_address
   }
