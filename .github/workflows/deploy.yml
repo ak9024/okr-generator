@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -19,6 +19,7 @@ jobs:
           script: whoami
       - name: Build Docker Image
         run: |
+          cd backend \
           docker build --build-arg HOST=${{ secrets.HOST }} --build-arg PORT=${{ secrets.PORT }} \
           --build-arg VERSION=${{ secrets.VERSION }} --build-arg TOKEN=${{ secrets.TOKEN }} \
           --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
