@@ -18,8 +18,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEYS }}
           script: whoami
 
+      - uses: actions/checkout@v3
       - name: Build Docker Image
-        uses: actions/checkout@v3
         run: |
           cd backend; ls \
           docker build --build-arg HOST=${{ secrets.HOST }} --build-arg PORT=${{ secrets.PORT }} \
