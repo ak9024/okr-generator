@@ -1,11 +1,13 @@
 name: Deploy backend
 
 on:
+  pull_request:
+    branches: [ "main" ]
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,4 +18,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEYS }}
-          script: whoami
+          script: |
+            docker pull "${{ secrets.DOCKER_USERNAME }}/backend:latest"; \
+            docker run -d "${{ secrets.DOCKER_USERNAME }}/backend:latest"
