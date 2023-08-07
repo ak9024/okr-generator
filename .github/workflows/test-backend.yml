@@ -1,11 +1,11 @@
-name: Build
+name: Test backend
 
 on:
   pull_request:
-    branches: ["main"]
+    branchs: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,12 +17,6 @@ jobs:
 
       - name: Build
         run: cd backend;go build -v ./...
-
-      - name: Env Generator
-        run: cd backend;go run . env-generator
-
-      - name: Copy env
-        run: cd backend;cp .config.generated.toml .config.toml
 
       - name: Test
         run: cd backend;go test -v ./...
