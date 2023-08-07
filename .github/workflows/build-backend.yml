@@ -2,10 +2,10 @@ name: Build & Push Backend
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
