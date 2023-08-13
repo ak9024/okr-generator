@@ -7,6 +7,7 @@ const login = `${process.env.REACT_APP_BACKEND}/api/auth/google/login`;
 
 function App() {
   const [cookies, removeCookies] = useCookies(["token"]);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
   const onClick = () => {
@@ -22,7 +23,7 @@ function App() {
             let objective = e.target.objective.value;
             let translate = e.target.translate.value;
 
-            console.log({ objective, translate });
+            setLoading(true);
 
             fetch(`${process.env.REACT_APP_BACKEND}/api/v1/okr-generator`, {
               method: "POST",
@@ -37,15 +38,19 @@ function App() {
               }),
             })
               .then((res) => res.json())
-              .then((res) => setData(res));
+              .then((res) => {
+                setData(res);
+                setLoading(false);
+              });
 
             e.preventDefault();
           }}
         >
           <input type="text" name="objective" placeholder="objective" />
           <input type="text" name="translate" placeholder="translate" />
-          <input type="submit" />
+          <input type="submit" disabled={loading} />
         </form>
+        {loading && <p>Loading</p>}
         <div>
           {(function() {
             if (data) {
