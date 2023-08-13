@@ -1,8 +1,8 @@
-name: Deploy backend
+name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -22,3 +22,5 @@ jobs:
             docker image rmi $(docker images -q -a)
             docker pull "${{ secrets.DOCKER_USERNAME }}/backend:latest";
             docker run -d -p 3000:3000 "${{ secrets.DOCKER_USERNAME }}/backend:latest"
+            docker pull "${{ secrets.DOCKER_USERNAME }}/frontend:latest";
+            docker run -d -p 80:80 "${{ secrets.DOCKER_USERNAME }}/frontend:latest"

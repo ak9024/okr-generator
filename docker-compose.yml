@@ -20,3 +20,12 @@ services:
     image: backend
     ports:
       - "3000:3000"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        BACKEND: "http://localhost:3000"
+    image: frontend
+    ports:
+      - "80:80"

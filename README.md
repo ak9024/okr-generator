@@ -5,4 +5,4 @@
 ## Getting Started
 
 - [Backend](./backend/README.md)
-- Frontend
+- [Frontend](./frontend/README.md)
