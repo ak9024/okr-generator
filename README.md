@@ -1,5 +1,5 @@
 <div align="center">
-    <h2>OKR Generator</h2>
+    <h2>🅾🅺🆁-🅶🅴🅽🅴🆁🅰🆃🅾🆁</h2>
 </div>
 
 ## Getting Started
