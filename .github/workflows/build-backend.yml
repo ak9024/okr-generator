@@ -26,6 +26,7 @@ jobs:
           build-args: |
             HOST=${{ secrets.HOST }}
             PORT=${{ secrets.PORT }}
+            ENV=${{ secrets.ENV }}
             VERSION=${{ secrets.VERSION }}
             TOKEN=${{ secrets.TOKEN }}
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
