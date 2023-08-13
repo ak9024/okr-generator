@@ -1,11 +1,13 @@
 import "./App.css";
 import { useCookies } from "react-cookie";
+import { useState } from "react";
 
 const logout = `${process.env.REACT_APP_BACKEND}/api/auth/google/logout`;
 const login = `${process.env.REACT_APP_BACKEND}/api/auth/google/login`;
 
 function App() {
   const [cookies, removeCookies] = useCookies(["token"]);
+  const [data, setData] = useState(null);
 
   const onClick = () => {
     window.location.href = logout;
@@ -35,7 +37,7 @@ function App() {
               }),
             })
               .then((res) => res.json())
-              .then((res) => console.log(res));
+              .then((res) => setData(res));
 
             e.preventDefault();
           }}
@@ -44,6 +46,22 @@ function App() {
           <input type="text" name="translate" placeholder="translate" />
           <input type="submit" />
         </form>
+        <div>
+          {(function() {
+            if (data) {
+              return (
+                <div>
+                  <h2>{data?.objective}</h2>
+                  {data?.key_results.map((kr, index) => (
+                    <div key={String(index)}>
+                      <p>{kr?.key_result}</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
+          })()}
+        </div>
         <button onClick={onClick}>logout</button>
       </div>
     );
