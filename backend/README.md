@@ -1,5 +1,4 @@
 <div align="center">
-    <img src="./assets/backend.png" />
     <h2>Backend (okr-generator)</h2>
 </div>
 
