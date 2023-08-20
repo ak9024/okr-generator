@@ -25,3 +25,4 @@ jobs:
             docker run -d -p 3000:3000 "ghcr.io/${{ github.repository }}/backend:latest"
             docker pull "ghcr.io/${{ github.repository }}/frontend:latest";
             docker run -d -p 80:80 "ghcr.io/${{ github.repository }}/frontend:latest"
+
