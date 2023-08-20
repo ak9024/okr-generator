@@ -17,15 +17,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEYS }}
           script: |
+            echo ${{ secrets.DOCKER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker stop $(docker ps -q -a)
             docker rm $(docker ps -q -a)
             docker image rmi $(docker images -q -a)
-            docker pull "${{ secrets.DOCKER_USERNAME }}/backend:latest";
-            docker run -d -p 3000:3000 "${{ secrets.DOCKER_USERNAME }}/backend:latest"
-            docker pull "${{ secrets.DOCKER_USERNAME }}/frontend:latest";
-            docker run -d -p 80:80 -p 443:443 "${{ secrets.DOCKER_USERNAME }}/frontend:latest"
-            docker pull certbot/certbot
-            docker run -it --rm \
-            certbot/cerbot certonly \
-            --webroot --webroot-path=/var/www/html \
-            -d malascoding.com
+            docker pull "ghcr.io/${{ github.actor }}/backend:latest";
+            docker run -d -p 3000:3000 "${{ github.actor }}/backend:latest"
+            docker pull "ghcr.io/${{ github.actor }}/frontend:latest";
+            docker run -d -p 80:80 "${{ github.actor }}/frontend:latest"
