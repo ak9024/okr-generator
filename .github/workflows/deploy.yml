@@ -21,7 +21,8 @@ jobs:
             docker stop $(docker ps -q -a)
             docker rm $(docker ps -q -a)
             docker image rmi $(docker images -q -a)
-            docker pull "ghcr.io/${{ github.actor }}/${{ github.repository }}/backend:latest";
-            docker run -d -p 3000:3000 "ghcr.io/${{ github.actor }}/${{ github.repository }}/backend:latest"
-            docker pull "ghcr.io/${{ github.actor }}/${{ github.repository }}/frontend:latest";
-            docker run -d -p 80:80 "ghcr.io/${{ github.actor }}/${{ github.repository }}/frontend:latest"
+            docker pull "ghcr.io/${{ github.repository }}/backend:latest";
+            docker run -d -p 3000:3000 "ghcr.io/${{ github.repository }}/backend:latest"
+            docker pull "ghcr.io/${{ github.repository }}/frontend:latest";
+            docker run -d -p 80:80 "ghcr.io/${{ github.repository }}/frontend:latest"
+
