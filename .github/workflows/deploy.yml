@@ -10,6 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: SCP
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PRIVATE_KEYS }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "docker-compose.yml"
+          target: "."
+
       - name: SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -18,11 +28,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEYS }}
           script: |
             echo ${{ secrets.DOCKER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker stop $(docker ps -q -a)
-            docker rm $(docker ps -q -a)
-            docker image rmi $(docker images -q -a)
-            docker pull "ghcr.io/${{ github.repository }}/backend:latest";
-            docker run -d -p 3000:3000 "ghcr.io/${{ github.repository }}/backend:latest"
-            docker pull "ghcr.io/${{ github.repository }}/frontend:latest";
-            docker run -d -p 80:80 "ghcr.io/${{ github.repository }}/frontend:latest"
-
+            docker compose down -v
+            docker compose up -d
