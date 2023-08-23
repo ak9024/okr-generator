@@ -1,0 +1,8 @@
+{
+  email adiatma.mail@gmail.com
+}
+
+malascoding.com {
+  reverse_proxy http://frontend:3001
+  reverse_proxy /api http://backend:3000
+}
