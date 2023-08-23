@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: SCP
+      - name: Copy assets to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -20,7 +20,7 @@ jobs:
           source: "docker-compose.yml,Caddyfile"
           target: "."
 
-      - name: SSH
+      - name: Re run docker compose
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -29,4 +29,4 @@ jobs:
           script: |
             echo ${{ secrets.DOCKER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose down -v
-            docker compose up -d
+            docker compose up -d --build
