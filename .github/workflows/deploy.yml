@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -15,7 +15,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PRIVATE_KEYS }}
+          key: ${{ secrets.SSH_PRIVATE_KEYS }}
           port: ${{ secrets.SSH_PORT }}
           source: "docker-compose.yml"
           target: "."
