@@ -22,7 +22,7 @@ var envGenerator = &cobra.Command{
 		googleRedirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
 		googleClientRedirectURL := os.Getenv("GOOGLE_CLIENT_REDIRECT_URL")
 		supabaseURL := os.Getenv("SUPABASE_URL")
-		supabaseKey := os.Getenv("SUPABSE_KEY")
+		supabaseKey := os.Getenv("SUPABASE_KEY")
 
 		// init env generator
 		eg := envgenerator.New(envgenerator.EnvGenerator{
