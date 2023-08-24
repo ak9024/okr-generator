@@ -51,10 +51,10 @@ func (a *auth) GoogleLoginCallback(c *fiber.Ctx) error {
 		}
 
 		c.Cookie(&fiber.Cookie{
-			Name:     "token",
-			Value:    token.AccessToken,
-			Expires:  token.Expiry,
-			SameSite: fiber.CookieSameSiteNoneMode,
+			Name:    "token",
+			Value:   token.AccessToken,
+			Expires: token.Expiry,
+			Domain:  a.Config.GetString("google.client_redirect_url"),
 		})
 
 		return c.Redirect(a.Config.GetString("google.client_redirect_url"), fiber.StatusTemporaryRedirect)
