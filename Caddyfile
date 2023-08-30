@@ -3,9 +3,11 @@
 }
 
 malascoding.com {
-  reverse_proxy frontend:80
-}
+  handle_path /backend/* {
+    reverse_proxy backend:3000
+  }
 
-api.malascoding.com {
-  reverse_proxy backend:3000
+  handle {
+    reverse_proxy frontend:80
+  }
 }
