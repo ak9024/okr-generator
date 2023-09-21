@@ -70,7 +70,7 @@ function App() {
             <Form
               onSubmit={(e) => {
                 let objective = e.target.objective.value;
-                let translate = e.target.translate.value;
+                let translate = e.target.translate.value || "english";
 
                 setLoading(true);
 
@@ -113,12 +113,18 @@ function App() {
           </Row>
         </Container>
         <Row>
-          {loading && <Spinner className="m-2">Loading</Spinner>}
-          {error && <p>{error}</p>}
+          {loading && (
+            <p style={{ "text-align": "center", padding: "10px" }}>
+              Loading...
+            </p>
+          )}
+          {error && (
+            <p style={{ "text-align": "center", padding: "10px" }}>{error}</p>
+          )}
         </Row>
         <Container>
           <Row>
-            {(function() {
+            {(function () {
               if (data) {
                 return (
                   <Accordion flush open={open} toggle={toggle}>
