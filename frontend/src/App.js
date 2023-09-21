@@ -28,6 +28,7 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
   const [open, setOpen] = useState(false);
+  const [validation, setValidation] = useState(null);
 
   useEffect(() => {
     fetch(`${googleApis}?access_token=${cookies?.token}`)
@@ -69,35 +70,42 @@ function App() {
           <Row>
             <Form
               onSubmit={(e) => {
-                let objective = e.target.objective.value;
+                let objective = e.target.objective.value || "";
                 let translate = e.target.translate.value || "english";
 
                 setLoading(true);
 
-                fetch(`${process.env.REACT_APP_BACKEND}/api/v1/okr-generator`, {
-                  method: "POST",
-                  mode: "cors",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${cookies?.token}`,
-                  },
-                  body: JSON.stringify({
-                    objective,
-                    translate,
-                  }),
-                })
-                  .then((res) => res.json())
-                  .then((res) => {
-                    setData(res);
-                    setLoading(false);
-                  })
-                  .catch((err) => {
-                    setError(err);
-                    setLoading(false);
-                  });
+                if (objective === "") {
+                  setValidation("Please fill objective");
+                } else {
+                  fetch(
+                    `${process.env.REACT_APP_BACKEND}/api/v1/okr-generator`,
+                    {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${cookies?.token}`,
+                      },
+                      body: JSON.stringify({
+                        objective,
+                        translate,
+                      }),
+                    },
+                  )
+                    .then((res) => res.json())
+                    .then((res) => {
+                      setData(res);
+                      setLoading(false);
+                    })
+                    .catch((err) => {
+                      setError(err);
+                      setLoading(false);
+                    });
 
-                e.preventDefault();
-                e.currentTarget.reset();
+                  e.preventDefault();
+                  e.currentTarget.reset();
+                }
               }}
             >
               <FormGroup>
@@ -121,10 +129,13 @@ function App() {
           {error && (
             <p style={{ "text-align": "center", padding: "10px" }}>{error}</p>
           )}
+          {validation && (
+            <p style={{ "text-align": "center", padding: "10px" }}>{error}</p>
+          )}
         </Row>
         <Container>
           <Row>
-            {(function () {
+            {(function() {
               if (data) {
                 return (
                   <Accordion flush open={open} toggle={toggle}>
